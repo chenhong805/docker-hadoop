@@ -7,6 +7,8 @@ services:
     restart: always
     ports:
       - 9870:9870
+      - 50070:50070
+      - 50470:50470
       - 9000:9000
     volumes:
       - /mnt/27296246-527b-4876-b7ab-e3179b26f443/hadoop_namenode:/hadoop/dfs/name
@@ -19,6 +21,12 @@ services:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
     container_name: datanode
     restart: always
+    ports:
+      - 9864:9864
+      - 50075:50075 # webui
+      - 50475:50475
+      - 50010:50010 # data transfer
+      - 50020:50020 # IPC
     volumes:
       - /mnt/27296246-527b-4876-b7ab-e3179b26f443/hadoop_datanode:/hadoop/dfs/data
     environment:
@@ -30,6 +38,8 @@ services:
     image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
     container_name: resourcemanager
     restart: always
+    ports:
+      - 8088:8088
     environment:
       SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864"
     env_file:
